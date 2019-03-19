@@ -1,40 +1,36 @@
 <?php
+    $idProcesso = 0; //gerador de ids para processos... só usar $idProcesso++;
 
-    $idProcesso = 0;
-
+    //filas/arrays de estados
 	$new = [];
 	$ready = [];
 	$running = [];
 	$blocked = [];
     $exit = [];
 
-    //filas...
+    //filas de dispositivos de entrada/saida...
     $filaHD = [];
     $filaVideo = [];
     $filaPrinter = [];
 
-    //estrutura processo
-    array(
-        "ID" => $idProcesso++,
-        "NOME" => "Virus",
-        "CICLOS" => rand(50, 200)
-
-    );
-
-    $todosProcessos = []; //a cada processo adicionado ao new, colocar aqui tbm...
+    $todosProcessos = []; //array com todos os processos 
 
     $maxCiclos = 30; //maximo de ciclos que um processo pode ficar no processador...
     
     //TODO: ler quantidade de processos: maximo 200;
     //TODO: ler tempo de espera em segundos;
 
-    function criarProcessos($qtProcessos){
-
+    for ($i=0; $i < $qtProcessos; $i++) {
+        array_push($todosProcessos, new array(
+            "ID" => $idProcesso++,
+            "NOME" => "Virus",
+            "CICLOS" => rand(50, 200)
+        ))
     }
 
     function espera(){ //espera 3 segundos para continar execução do código...
-        
-        //TODO: trocar $i por valor inserido pelo usuario...
+
+        ///TODO: trocar $i por valor inserido pelo usuario...
         for ($i=0; $i < 3; $i++) { 
             sleep(1);
             echo $i . "segundos se passaram... <br>";
