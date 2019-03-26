@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <title>Multiprogram Simulation - Eduardo Arndt</title>
+</head>
+
+<body>
+    <div class="container-fluid" style="text-align: center; padding: 10px;">
+        <h1>Multiprogram Simulation - Eduardo Arndt</h1>
+    </div>
+
+    <div class="container-fluid">
+        <div class="container-fluid" style="display: flex; flex-direction: row;">
+            <div style="flex: 1; background-color: blue">Criação</div>
+            <div style="flex: 1; background-color: red">Apto</div>
+            <div style="flex: 1; background-color: yellow">Execução</div>
+            <div style="flex: 1; background-color: green">Bloqueado</div>
+            <div style="flex: 1; background-color: purple">Finalizado</div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        //gerador de ids para processos... só usar $idProcesso++;
+        var idProcesso = 0;
+
+        //arrays de estados
+        var criation = new Array();
+        var ready = new Array();
+        var running = new Array();
+        var blocked = new Array();
+        var exit = new Array();
+
+        //filas de dispositivos de entrada/saida...
+        var filaHD = new Array();
+        var filaVideo = new Array();
+        var filaPrinter = new Array();
+
+        //todos processos
+        var todosProcessos = new Array();
+
+        //maximo de ciclos que um processo pode ficar no processador...
+        var maxCiclos = 30;
+
+        //TODO: ler quantidade de processos: maximo 200;
+        var qtProcessos = 200;
+        //TODO: ler tempo de espera em segundos;
+        var tempoEspera = 3;
+
+        for (let i = 0; i < qtProcessos.length; i++) {
+            todosProcessos[i].push(new Array({
+                ID: idProcesso++,
+                NOME: "Virus",
+                CICLOS: Math.floor(Math.random() * 200) + 50
+            }));
+        }
+
+        function sleep() {
+
+        }
+
+        function listarProcessos() {
+            //TODO: CRIAR INTERFACE EM HTML PARA MOSTRAR OS DADOS
+            //listar em criacao
+            //listar aptos
+            //listar execucao
+            //listar bloqueados
+            //listar finalizados
+        }
+
+    </script>
+</body>
+</html>
