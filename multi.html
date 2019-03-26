@@ -9,21 +9,89 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+    <style>
+        #full {
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .txt-header {
+            text-align: center;
+            flex: 1;
+        }
+
+        .txt-title {
+            font-style: normal;
+        }
+
+        .txt-lista {
+            text-align: left;
+            font-size: 12px;
+            line-height: 1.1;
+        }
+
+        .full-height-screen {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .full-height {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .list-block {
+            display: block;
+        }
+    </style>
+
     <title>Multiprogram Simulation - Eduardo Arndt</title>
 </head>
 
 <body>
-    <div class="container-fluid" style="text-align: center; padding: 10px;">
-        <h1>Multiprogram Simulation - Eduardo Arndt</h1>
-    </div>
+    <div id="full">
+        <div class="container-fluid" style="text-align: center; padding: 10px;">
+            <h1>Multiprogram Simulation - Eduardo Arndt</h1>
+        </div>
 
-    <div class="container-fluid">
-        <div class="container-fluid" style="display: flex; flex-direction: row;">
-            <div style="flex: 1; background-color: blue">Criação</div>
-            <div style="flex: 1; background-color: red">Apto</div>
-            <div style="flex: 1; background-color: yellow">Execução</div>
-            <div style="flex: 1; background-color: green">Bloqueado</div>
-            <div style="flex: 1; background-color: purple">Finalizado</div>
+        <div class="container-fluid full-height-screen">
+            <div class="container-fluid full-height" style="display: flex; flex-direction: row;">
+                <div class="txt-header list-block" style="background-color: lightblue;">
+                    <div class="txt-title">Criação</div>
+                    <ul id="creation" class="txt-lista">
+                        <!-- javascript controla itens aqui dentro -->
+                    </ul>
+                </div>
+                <div class="txt-header list-block" style="background-color: lightcoral;">
+                    <div class="txt-title">Apto</div>
+                    <ul id="ready" class="txt-lista">
+                        <!-- javascript controla itens aqui dentro -->
+                    </ul>
+                </div>
+                <div class="txt-header list-block" style="background-color: lightyellow;">
+                    <div class="txt-title">Execução</div>
+                    <ul id="running" class="txt-lista">
+                        <!-- javascript controla itens aqui dentro -->
+                    </ul>
+                </div>
+                <div class="txt-header list-block" style="background-color: lightgreen;">
+                    <div class="txt-title">Bloqueado</div>
+                    <ul id="block" class="txt-lista">
+                        <!-- javascript controla itens aqui dentro -->
+                    </ul>
+                </div>
+                <div class="txt-header list-block" style="background-color: lightsteelblue;">
+                    <div class="txt-title">Finalizado</div>
+                    <ul id="exit" class="txt-lista">
+                        <!-- javascript controla itens aqui dentro -->
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -34,46 +102,54 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
+
+        class Process {
+            constructor(processId, processName, processCycles) {
+                this.id = processId;
+                this.nome = processName;
+                this.qtCiclos = processCycles;
+            }
+        }
+
+        //controla execução do programa
+        var executar = true;
         //gerador de ids para processos... só usar $idProcesso++;
         var idProcesso = 0;
-
+        //ciclos que se passaram;
+        var ciclos = 0;
         //arrays de estados
-        var criation = new Array();
+        var creation = new Array();
         var ready = new Array();
         var running = new Array();
         var blocked = new Array();
         var exit = new Array();
-
         //filas de dispositivos de entrada/saida...
         var filaHD = new Array();
         var filaVideo = new Array();
         var filaPrinter = new Array();
-
         //todos processos
         var todosProcessos = new Array();
-
         //maximo de ciclos que um processo pode ficar no processador...
         var maxCiclos = 30;
-
         //TODO: ler quantidade de processos: maximo 200;
         var qtProcessos = 200;
         //TODO: ler tempo de espera em segundos;
         var tempoEspera = 3;
 
-        for (let i = 0; i < qtProcessos.length; i++) {
-            todosProcessos[i].push(new Array({
-                ID: idProcesso++,
-                NOME: "Virus",
-                CICLOS: Math.floor(Math.random() * 200) + 50
-            }));
+        for (let i = 0; i < qtProcessos; i++) {
+            todosProcessos[i] = new Process(
+                idProcesso++,                                                   //id
+                "Processo" + "-" + Math.random().toString(36).substr(2, 5),     //nome
+                getRandomInt(50, 200)                                           //qt ciclos
+            )
         }
 
-        function sleep() {
-
+        function sleep(delay) {
+            var start = new Date().getTime();
+            while (new Date().getTime() < start + delay);
         }
 
-        function listarProcessos() {
-            //TODO: CRIAR INTERFACE EM HTML PARA MOSTRAR OS DADOS
+        function atualizar() {
             //listar em criacao
             //listar aptos
             //listar execucao
@@ -81,6 +157,70 @@
             //listar finalizados
         }
 
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        //começar execucao do programa... loopin'Dirty
+
+        todosProcessos.forEach(element => {
+            creation.push(element);
+        });
+
+        console.log(todosProcessos);
+        console.log(creation);
+
+        /* 
+
+
+        for (let i = 0; i < creation.length; i++) {
+            ready.push(creation[i]);
+            creation.shift();
+        }
+
+        while (executar == true) {
+            ciclos++;
+
+            criarNovo = getRandomInt(0, 100);
+            if ((criarNovo >= 0) && (criarNovo <= 10)) {
+                creation.push(new Process(
+                    idProcesso++,
+                    "Processo" + "-" + Math.random().toString(36).substr(2, 5),
+                    getRandomInt(50, 200)
+                ));
+            }
+
+            if (running.length < 1) { //não tem nada executando, pode botar novo
+                running.push(ready[0]);
+                ready.shift();
+
+                ciclar = 0;
+
+                if (running[0].qtCiclos > 30){
+                    ciclar = 30;
+                } else {
+                    ciclar = running[0].qtCiclos;
+                }
+
+                for (let i = 0; i < ciclar; i++) {
+                    running[0].qtCiclos--;
+                }
+            }
+
+            console.log('creation: ', creation);
+            console.log('ready: ', ready);
+            console.log('running: ', running);
+            console.log('blocked: ', blocked);
+            console.log('exit: ', exit);
+
+            executar = false;
+        }
+
+         */
+
     </script>
 </body>
+
 </html>
