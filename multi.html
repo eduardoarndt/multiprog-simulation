@@ -50,13 +50,13 @@
         }
     </style>
 
-    <title>Multiprogram Simulation - Eduardo Arndt</title>
+    <title>Multiprogramação - Eduardo Arndt</title>
 </head>
 
 <body>
     <div id="full">
         <div class="container-fluid" style="text-align: center; padding: 10px;">
-            <h1>Multiprogram Simulation - Eduardo Arndt</h1>
+            <h1>Multiprogramação - Eduardo Arndt</h1>
         </div>
 
         <div class="container-fluid full-height-screen">
@@ -169,18 +169,14 @@
             creation.push(element);
         });
 
-        console.log(todosProcessos);
-        console.log(creation);
-
-        /* 
-
-
-        for (let i = 0; i < creation.length; i++) {
-            ready.push(creation[i]);
-            creation.shift();
-        }
-
         while (executar == true) {
+
+            creation.forEach(element => {
+                ready.push(element);
+            });
+
+            creation = [];
+
             ciclos++;
 
             criarNovo = getRandomInt(0, 100);
@@ -192,13 +188,13 @@
                 ));
             }
 
-            if (running.length < 1) { //não tem nada executando, pode botar novo
+            if (running.length < 1) {
                 running.push(ready[0]);
                 ready.shift();
 
                 ciclar = 0;
 
-                if (running[0].qtCiclos > 30){
+                if (running[0].qtCiclos > 30) {
                     ciclar = 30;
                 } else {
                     ciclar = running[0].qtCiclos;
@@ -209,16 +205,20 @@
                 }
             }
 
-            console.log('creation: ', creation);
-            console.log('ready: ', ready);
-            console.log('running: ', running);
-            console.log('blocked: ', blocked);
-            console.log('exit: ', exit);
-
             executar = false;
+            //TODO: Fim do programa
+            if (exit.length == todosProcessos.length) {
+                executar = false;
+            }
         }
 
-         */
+        console.log('creation: ', creation);
+        console.log('ready: ', ready);
+        console.log('running: ', running);
+        console.log('blocked: ', blocked);
+        console.log('exit: ', exit);
+
+        throw "End of Program";
 
     </script>
 </body>
