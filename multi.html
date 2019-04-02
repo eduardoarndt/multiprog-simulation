@@ -11,11 +11,12 @@
 
     <style>
         #full {
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             margin: 0;
             padding: 0;
             overflow: hidden;
+            overflow-x: hidden;
         }
 
         .txt-header {
@@ -25,6 +26,8 @@
 
         .txt-title {
             font-style: normal;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
 
         .txt-lista {
@@ -63,9 +66,9 @@
             <div class="container-fluid full-height" style="display: flex; flex-direction: row;">
                 <div class="txt-header list-block" style="background-color: lightblue;">
                     <div class="txt-title">Criação</div>
-                    <ul id="creation" class="txt-lista">
+                    <ol id="creation" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
-                    </ul>
+                    </ol>
                 </div>
                 <div class="txt-header list-block" style="background-color: lightcoral;">
                     <div class="txt-title">Apto</div>
@@ -133,7 +136,7 @@
         var maxCiclos = 30;
         //TODO: ler quantidade de processos: maximo 200;
         var qtProcessos = 200;
-        //TODO: ler tempo de espera em segundos;
+        //TODO: ler tempo de espera  em segundos;
         var tempoEspera = 3;
 
         for (let i = 0; i < qtProcessos; i++) {
@@ -150,7 +153,20 @@
         }
 
         function atualizar() {
-            //listar em criacao
+
+            var creationList = document.getElementById("creation");
+
+            while (creationList.firstChild) {
+                creationList.removeChild(creationList.firstChild);
+            }
+
+            creation.forEach(element => {
+                var node = document.createElement("LI");
+                var textnode = document.createTextNode(element['nome']);
+                node.appendChild(textnode);
+                creationList.appendChild(node);
+            });
+
             //listar aptos
             //listar execucao
             //listar bloqueados
@@ -169,6 +185,8 @@
             creation.push(element);
         });
 
+        atualizar();
+
         while (executar == true) {
 
             creation.forEach(element => {
@@ -179,13 +197,15 @@
 
             ciclos++;
 
-            criarNovo = getRandomInt(0, 100);
-            if ((criarNovo >= 0) && (criarNovo <= 10)) {
-                creation.push(new Process(
-                    idProcesso++,
-                    "Processo" + "-" + Math.random().toString(36).substr(2, 5),
-                    getRandomInt(50, 200)
-                ));
+            if (todosProcessos.length < 200) {
+                criarNovo = getRandomInt(0, 100);
+                if ((criarNovo >= 0) && (criarNovo <= 10)) {
+                    creation.push(new Process(
+                        idProcesso++,
+                        "Processo" + "-" + Math.random().toString(36).substr(2, 5),
+                        getRandomInt(50, 200)
+                    ));
+                }
             }
 
             if (running.length < 1) {
@@ -212,13 +232,15 @@
             }
         }
 
+        atualizar();
+
         console.log('creation: ', creation);
         console.log('ready: ', ready);
         console.log('running: ', running);
         console.log('blocked: ', blocked);
         console.log('exit: ', exit);
 
-        throw "End of Program";
+        throw "STACK OVERFLOW! Just kidding, its just the end of the program";
 
     </script>
 </body>
