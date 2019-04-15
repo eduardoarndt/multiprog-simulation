@@ -72,27 +72,27 @@
                 </div>
                 <div class="txt-header list-block" style="background-color: lightcoral;">
                     <div class="txt-title">Apto</div>
-                    <ul id="ready" class="txt-lista">
+                    <ol id="ready" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
-                    </ul>
+                    </ol>
                 </div>
                 <div class="txt-header list-block" style="background-color: lightyellow;">
                     <div class="txt-title">Execução</div>
-                    <ul id="running" class="txt-lista">
+                    <ol id="running" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
-                    </ul>
+                    </ol>
                 </div>
                 <div class="txt-header list-block" style="background-color: lightgreen;">
                     <div class="txt-title">Bloqueado</div>
-                    <ul id="block" class="txt-lista">
+                    <ol id="blocked" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
-                    </ul>
+                    </ol>
                 </div>
                 <div class="txt-header list-block" style="background-color: lightsteelblue;">
                     <div class="txt-title">Finalizado</div>
-                    <ul id="exit" class="txt-lista">
+                    <ol id="exit" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
-                    </ul>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -147,15 +147,16 @@
             )
         }
 
-        function sleep(delay) {
-            var start = new Date().getTime();
-            while (new Date().getTime() < start + delay);
-        }
-
         function atualizar() {
 
+            //DOM
             var creationList = document.getElementById("creation");
+            var readyList = document.getElementById("ready");
+            var runningList = document.getElementById("running");
+            var blockedList = document.getElementById("blocked");
+            var exitList = document.getElementById("exit");
 
+            //listar criacao
             while (creationList.firstChild) {
                 creationList.removeChild(creationList.firstChild);
             }
@@ -168,9 +169,53 @@
             });
 
             //listar aptos
+            while (readyList.firstChild) {
+                readyList.removeChild(readyList.firstChild);
+            }
+
+            ready.forEach(element => {
+                var node = document.createElement("LI");
+                var textnode = document.createTextNode(element['nome']);
+                node.appendChild(textnode);
+                readyList.appendChild(node);
+            });
+
             //listar execucao
+            while (runningList.firstChild) {
+                runningList.removeChild(runningList.firstChild);
+            }
+
+            running.forEach(element => {
+                var node = document.createElement("LI");
+                var textnode = document.createTextNode(element['nome']);
+                node.appendChild(textnode);
+                runningList.appendChild(node);
+            });
+
             //listar bloqueados
+            while (blockedList.firstChild) {
+                blockedList.removeChild(blockedList.firstChild);
+            }
+
+            blocked.forEach(element => {
+                var node = document.createElement("LI");
+                var textnode = document.createTextNode(element['nome']);
+                node.appendChild(textnode);
+                blockedList.appendChild(node);
+            });
+
             //listar finalizados
+            while (exitList.firstChild) {
+                exitList.removeChild(exitList.firstChild);
+            }
+
+            exit.forEach(element => {
+                var node = document.createElement("LI");
+                var textnode = document.createTextNode(element['nome']);
+                node.appendChild(textnode);
+                exitList.appendChild(node);
+            });
+
         }
 
         function getRandomInt(min, max) {
@@ -179,68 +224,70 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        //começar execucao do programa... loopin'Dirty
-
+        //criar processos iniciais
         todosProcessos.forEach(element => {
             creation.push(element);
         });
 
         atualizar();
 
-        throw 'teste';
+        //throw 'Teste 1: Processos criados.';
 
+        //começar execucao do programa... loopin'Dirty
         while (executar == true) {
 
-            creation.forEach(element => {
-                ready.push(element);
-            });
+                atualizar();
 
-            creation = [];
+                creation.forEach(element => {
+                    ready.push(element);
+                });
 
-            ciclos++;
+                creation = [];
 
-            if (todosProcessos.length < 200) {
-                criarNovo = getRandomInt(0, 100);
-                if ((criarNovo >= 0) && (criarNovo <= 10)) {
-                    creation.push(new Process(
-                        idProcesso++,
-                        "Processo" + "-" + Math.random().toString(36).substr(2, 5),
-                        getRandomInt(50, 200)
-                    ));
-                }
-            }
+                ciclos++;
 
-            if (running.length < 1) {
-                running.push(ready[0]);
-                ready.shift();
-
-                ciclar = 0;
-
-                if (running[0].qtCiclos > 30) {
-                    ciclar = 30;
-                } else {
-                    ciclar = running[0].qtCiclos;
+                if (todosProcessos.length < 200) {
+                    criarNovo = getRandomInt(0, 100);
+                    if ((criarNovo >= 0) && (criarNovo <= 10)) {
+                        creation.push(new Process(
+                            idProcesso++,
+                            "Processo" + "-" + Math.random().toString(36).substr(2, 5),
+                            getRandomInt(50, 200)
+                        ));
+                    }
                 }
 
-                for (let i = 0; i < ciclar; i++) {
-                    running[0].qtCiclos--;
-                }
-            }
+                if (running.length < 1) {
+                    running.push(ready[0]);
+                    ready.shift();
 
-            executar = false;
-            //TODO: Fim do programa
-            if (exit.length == todosProcessos.length) {
+                    ciclar = 0;
+
+                    if (running[0].qtCiclos > 30) {
+                        ciclar = 30;
+                    } else {
+                        ciclar = running[0].qtCiclos;
+                    }
+
+                    for (let i = 0; i < ciclar; i++) {
+                        running[0].qtCiclos--;
+                    }
+                }
+
                 executar = false;
-            }
+                //TODO: Fim do programa
+                if (exit.length == todosProcessos.length) {
+                    executar = false;
+                }
         }
-
-        atualizar();
 
         console.log('creation: ', creation);
         console.log('ready: ', ready);
         console.log('running: ', running);
         console.log('blocked: ', blocked);
         console.log('exit: ', exit);
+
+        atualizar();
 
         throw "STACK OVERFLOW! Just kidding, its just the end of the program";
 
