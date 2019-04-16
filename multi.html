@@ -21,10 +21,10 @@
 
         #big-box {
             background: linear-gradient(60deg, yellow, hotpink);
-            background-size: % %;
-            -webkit-animation: AnimationName 12s ease infinite;
-            -moz-animation: AnimationName 12s ease infinite;
-            animation: AnimationName 12s ease infinite;
+            background-size: 300% 300%;
+            -webkit-animation: gradientAnimation 12s ease infinite;
+            -moz-animation: gradientAnimation 12s ease infinite;
+            animation: gradientAnimation 12s ease infinite;
         }
 
         .txt-header {
@@ -277,10 +277,6 @@
 
         //throw 'Teste 1: Processos criados.';
 
-        var i = 0;
-
-        atualizar();
-
         function myLoop() {
             setTimeout(function () {
 
@@ -327,19 +323,9 @@
                     }
                 }
 
+                /* TODO: etc... */
 
-                //executar = false;
-
-                //TODO: Fim do programa
-                /* if (exit.length == todosProcessos.length) {
-                    executar = false;
-                } */
-
-                i++;
-
-                //console.log('delay...', i*3, 's');
-
-                if (i == 2000) {
+                if (exit.length == todosProcessos.length) {
                     executar = false;
                     atualizar();
                 }
@@ -351,8 +337,6 @@
         }
 
         myLoop();
-
-        //throw "STACK OVERFLOW! Just kidding, its just the end of the program";
 
     </script>
 </body>
