@@ -143,18 +143,18 @@
             todosProcessos[i] = new Process(
                 idProcesso++,                                                   //id
                 "Processo" + "-" + Math.random().toString(36).substr(2, 5),     //nome
-                getRandomInt(50, 200)                                           //qt ciclos
+                getRandomInt(30, 30)                                           //qt ciclos
             )
         }
 
-        function atualizar() {
+        //DOM
+        var creationList = document.getElementById("creation");
+        var readyList = document.getElementById("ready");
+        var runningList = document.getElementById("running");
+        var blockedList = document.getElementById("blocked");
+        var exitList = document.getElementById("exit");
 
-            //DOM
-            var creationList = document.getElementById("creation");
-            var readyList = document.getElementById("ready");
-            var runningList = document.getElementById("running");
-            var blockedList = document.getElementById("blocked");
-            var exitList = document.getElementById("exit");
+        function atualizar() {
 
             //listar criacao
             while (creationList.firstChild) {
@@ -233,10 +233,12 @@
 
         //throw 'Teste 1: Processos criados.';
 
-        //começar execucao do programa... loopin'Dirty
-        while (executar == true) {
+        var i = 0;
 
-                atualizar();
+        atualizar();
+
+        function myLoop() {
+            setTimeout(function () {
 
                 creation.forEach(element => {
                     ready.push(element);
@@ -257,7 +259,7 @@
                     }
                 }
 
-                if (running.length < 1) {
+                if ((running.length < 1) && (ready.length > 0)) {
                     running.push(ready[0]);
                     ready.shift();
 
@@ -271,25 +273,42 @@
 
                     for (let i = 0; i < ciclar; i++) {
                         running[0].qtCiclos--;
+
+                        atualizar();
+
+                        if (running[0].qtCiclos == 0) {
+                            exit.push(running[0]);
+                            running.shift();
+                        }
                     }
                 }
 
-                executar = false;
+
+                //executar = false;
+
                 //TODO: Fim do programa
-                if (exit.length == todosProcessos.length) {
+                /* if (exit.length == todosProcessos.length) {
                     executar = false;
+                } */
+
+                i++;
+
+                //console.log('delay...', i*3, 's');
+
+                if (i == 2000) {
+                    executar = false;
+                    atualizar();
                 }
+
+                if (executar == true) {
+                    myLoop();
+                }
+            }, 10)
         }
 
-        console.log('creation: ', creation);
-        console.log('ready: ', ready);
-        console.log('running: ', running);
-        console.log('blocked: ', blocked);
-        console.log('exit: ', exit);
+        myLoop();
 
-        atualizar();
-
-        throw "STACK OVERFLOW! Just kidding, its just the end of the program";
+        //throw "STACK OVERFLOW! Just kidding, its just the end of the program";
 
     </script>
 </body>
