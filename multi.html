@@ -19,6 +19,14 @@
             overflow-x: hidden;
         }
 
+        #big-box {
+            background: linear-gradient(60deg, yellow, hotpink);
+            background-size: % %;
+            -webkit-animation: AnimationName 12s ease infinite;
+            -moz-animation: AnimationName 12s ease infinite;
+            animation: AnimationName 12s ease infinite;
+        }
+
         .txt-header {
             text-align: center;
             flex: 1;
@@ -51,6 +59,42 @@
         .list-block {
             display: block;
         }
+
+        @-webkit-keyframes gradientAnimation {
+            0% {
+                background-position: 1% 0%
+            }
+            50% {
+                background-position: 99% 100%
+            }
+            100% {
+                background-position: 1% 0%
+            }
+        }
+
+        @-moz-keyframes gradientAnimation {
+            0% {
+                background-position: 1% 0%
+            }
+            50% {
+                background-position: 99% 100%
+            }
+            100% {
+                background-position: 1% 0%
+            }
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 1% 0%
+            }
+            50% {
+                background-position: 99% 100%
+            }
+            100% {
+                background-position: 1% 0%
+            }
+        }
     </style>
 
     <title>Multiprogramação - Eduardo Arndt</title>
@@ -63,32 +107,32 @@
         </div>
 
         <div class="container-fluid full-height-screen">
-            <div class="container-fluid full-height" style="display: flex; flex-direction: row;">
-                <div class="txt-header list-block" style="background-color: lightblue;">
+            <div id="big-box" class="container-fluid full-height" style="display: flex; flex-direction: row;">
+                <div class="txt-header list-block">
                     <div class="txt-title">Criação</div>
                     <ol id="creation" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
                     </ol>
                 </div>
-                <div class="txt-header list-block" style="background-color: lightcoral;">
+                <div class="txt-header list-block">
                     <div class="txt-title">Apto</div>
                     <ol id="ready" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
                     </ol>
                 </div>
-                <div class="txt-header list-block" style="background-color: lightyellow;">
+                <div class="txt-header list-block">
                     <div class="txt-title">Execução</div>
                     <ol id="running" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
                     </ol>
                 </div>
-                <div class="txt-header list-block" style="background-color: lightgreen;">
+                <div class="txt-header list-block">
                     <div class="txt-title">Bloqueado</div>
                     <ol id="blocked" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
                     </ol>
                 </div>
-                <div class="txt-header list-block" style="background-color: lightsteelblue;">
+                <div class="txt-header list-block">
                     <div class="txt-title">Finalizado</div>
                     <ol id="exit" class="txt-lista">
                         <!-- javascript controla itens aqui dentro -->
